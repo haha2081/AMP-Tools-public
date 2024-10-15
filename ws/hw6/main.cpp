@@ -51,6 +51,10 @@ int main(int argc, char** argv) {
 
     Visualizer::showFigures();
 
+<<<<<<< HEAD
     amp::HW6::grade<PointWaveFrontAlgorithm, ManipulatorWaveFrontAlgorithm, MyAStarAlgo>("hadi.hasbini@colorado.edu", argc, argv, std::make_tuple(wf_algo, point_agent_ctor), std::make_tuple(wf_algo, manipulator_ctor), std::make_tuple());
+=======
+    amp::HW6::grade<PointWaveFrontAlgorithm, ManipulatorWaveFrontAlgorithm, MyAStarAlgo>("yusif.razzaq@colorado.edu", argc, argv, std::make_tuple(wf_algo, point_agent_ctor), std::make_tuple(wf_algo, manipulator_ctor), std::make_tuple());
+>>>>>>> 271eec1a1e253bd294605f15efdd926ec933872a
     return 0;
 }
