@@ -25,90 +25,15 @@ int main(int argc, char **argv)
     std::vector<double> validSolutionsList;
     std::vector<std::string> labels;
 
-    bool benchmark = true;
+    bool benchmark = false;
 
-        if (benchmark){
-
-        // Benchmark results storage
-        for (const auto &param : param_combinations)
-        {
-            int n = param.first;
-            double r = param.second;
-
-            double totalValidSolutions = 0;
-            std::vector<double> pathLengthList;
-            std::vector<double> computationTimeList;
-
-            for (int i = 0; i < 100; ++i)
-            {
-                MyPRM prm;
-
-                prm.setNumSamples(n);
-                prm.setConnectionRadius(r);
-                prm.setSmoothing(false);
-
-                auto start_time = std::chrono::high_resolution_clock::now();
-
-                prm.plan(problem);
-
-                auto end_time = std::chrono::high_resolution_clock::now();
-
-                std::chrono::duration<double> elapsed_time = end_time - start_time;
-                computationTimeList.push_back(elapsed_time.count());
-
-                if (prm.getValidSolutions() > 0)
-                {
-                    totalValidSolutions += 1;
-                }
-
-                auto length = prm.getPathLength();
-
-                if (length > 0)
-                {
-                    pathLengthList.push_back(length);
-                }
-            }
-
-            validSolutionsList.push_back(totalValidSolutions);
-            pathLengthData.push_back(std::vector<double>(pathLengthList.begin(), pathLengthList.end()));
-            computationTimeData.push_back(std::vector<double>(computationTimeList.begin(), computationTimeList.end()));
-
-            std::ostringstream streamObj;
-
-            streamObj << std::fixed << std::setprecision(2) << r;
-            std::string strNumber = streamObj.str();
-
-            labels.push_back("n=" + std::to_string(n) + ", r=" + strNumber);
-        }
-
-        Visualizer::makeBarGraph(validSolutionsList, labels, "Valid Solutions Benchmark", "Parameters (n, r)", "Valid Solutions");
-
-        Visualizer::makeBoxPlot(pathLengthData, labels, "Path Length Benchmark", "Parameters (n, r)", "Path Length");
-
-        Visualizer::makeBoxPlot(computationTimeData, labels, "Computation Time Benchmark", "Parameters (n, r)", "Computation Time (seconds)");
-        }
-        else{
-
-        MyPRM prm;
-
-        prm.setNumSamples(200);
-        prm.setConnectionRadius(2);
-
-        prm.setSmoothing(false);
-
-        Visualizer::makeFigure(problem, prm.plan(problem), *prm.getGraph(), prm.getNodes());
-
-    }
-
-
-    //Generate a random problem and test RRT
     //     if (benchmark){
 
     //     // Benchmark results storage
-
-    //     int n = 5000;
-    //     double r = 0.5;
-
+    //     for (const auto &param : param_combinations)
+    //     {
+    //         int n = param.first;
+    //         double r = param.second;
 
     //         double totalValidSolutions = 0;
     //         std::vector<double> pathLengthList;
@@ -116,27 +41,27 @@ int main(int argc, char **argv)
 
     //         for (int i = 0; i < 100; ++i)
     //         {
-    //             MyRRT rrt;
+    //             MyPRM prm;
 
-    //             rrt.setNumSamples(n);
-    //             rrt.setConnectionRadius(r);
-    //             rrt.setSmoothing(true);
+    //             prm.setNumSamples(n);
+    //             prm.setConnectionRadius(r);
+    //             prm.setSmoothing(false);
 
     //             auto start_time = std::chrono::high_resolution_clock::now();
 
-    //             rrt.plan(problem);
+    //             prm.plan(problem);
 
     //             auto end_time = std::chrono::high_resolution_clock::now();
 
     //             std::chrono::duration<double> elapsed_time = end_time - start_time;
     //             computationTimeList.push_back(elapsed_time.count());
 
-    //             if (rrt.getValidSolutions() > 0)
+    //             if (prm.getValidSolutions() > 0)
     //             {
     //                 totalValidSolutions += 1;
     //             }
 
-    //             auto length = rrt.getPathLength();
+    //             auto length = prm.getPathLength();
 
     //             if (length > 0)
     //             {
@@ -154,7 +79,7 @@ int main(int argc, char **argv)
     //         std::string strNumber = streamObj.str();
 
     //         labels.push_back("n=" + std::to_string(n) + ", r=" + strNumber);
-        
+    //     }
 
     //     Visualizer::makeBarGraph(validSolutionsList, labels, "Valid Solutions Benchmark", "Parameters (n, r)", "Valid Solutions");
 
@@ -164,17 +89,92 @@ int main(int argc, char **argv)
     //     }
     //     else{
 
-    //     MyRRT rrt;
+    //     MyPRM prm;
 
-    //     rrt.setNumSamples(200);
-    //     rrt.setConnectionRadius(0.5);
+    //     prm.setNumSamples(300);
+    //     prm.setConnectionRadius(2.0);
 
-    //     rrt.setSmoothing(true);
+    //     prm.setSmoothing(false);
 
-    //     Visualizer::makeFigure(problem, rrt.plan(problem), *rrt.getGraph(), rrt.getNodes());
-
+    //     Visualizer::makeFigure(problem, prm.plan(problem), *prm.getGraph(), prm.getNodes());
 
     // }
+
+
+    //Generate a random problem and test RRT
+        if (benchmark){
+
+        // Benchmark results storage
+
+        int n = 5000;
+        double r = 0.5;
+
+
+            double totalValidSolutions = 0;
+            std::vector<double> pathLengthList;
+            std::vector<double> computationTimeList;
+
+            for (int i = 0; i < 100; ++i)
+            {
+                MyRRT rrt;
+
+                rrt.setNumSamples(n);
+                rrt.setConnectionRadius(r);
+                rrt.setSmoothing(false);
+
+                auto start_time = std::chrono::high_resolution_clock::now();
+
+                rrt.plan(problem);
+
+                auto end_time = std::chrono::high_resolution_clock::now();
+
+                std::chrono::duration<double> elapsed_time = end_time - start_time;
+                computationTimeList.push_back(elapsed_time.count());
+
+                if (rrt.getValidSolutions() > 0)
+                {
+                    totalValidSolutions += 1;
+                }
+
+                auto length = rrt.getPathLength();
+
+                if (length > 0)
+                {
+                    pathLengthList.push_back(length);
+                }
+            }
+
+            validSolutionsList.push_back(totalValidSolutions);
+            pathLengthData.push_back(std::vector<double>(pathLengthList.begin(), pathLengthList.end()));
+            computationTimeData.push_back(std::vector<double>(computationTimeList.begin(), computationTimeList.end()));
+
+            std::ostringstream streamObj;
+
+            streamObj << std::fixed << std::setprecision(2) << r;
+            std::string strNumber = streamObj.str();
+
+            labels.push_back("n=" + std::to_string(n) + ", r=" + strNumber);
+        
+
+        Visualizer::makeBarGraph(validSolutionsList, labels, "Valid Solutions Benchmark", "Parameters (n, r)", "Valid Solutions");
+
+        Visualizer::makeBoxPlot(pathLengthData, labels, "Path Length Benchmark", "Parameters (n, r)", "Path Length");
+
+        Visualizer::makeBoxPlot(computationTimeData, labels, "Computation Time Benchmark", "Parameters (n, r)", "Computation Time (seconds)");
+        }
+        else{
+
+        MyRRT rrt;
+
+        rrt.setNumSamples(100000);
+        rrt.setConnectionRadius(3);
+
+        rrt.setSmoothing(false);
+
+        Visualizer::makeFigure(problem, rrt.plan(problem), *rrt.getGraph(), rrt.getNodes());
+
+
+    }
 
 
 

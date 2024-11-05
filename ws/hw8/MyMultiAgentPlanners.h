@@ -12,8 +12,13 @@
 
 
 class MyCentralPlanner : public amp::CentralizedMultiAgentRRT {
+    private:
+        double pathLength;
+
     public:
         virtual amp::MultiAgentPath2D plan(const amp::MultiAgentProblem2D& problem) override; 
+        double getPathLength() const { return pathLength; }
+
 };
 
 
